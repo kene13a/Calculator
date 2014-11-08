@@ -1,0 +1,237 @@
+import java.text.DecimalFormat;
+import java.util.*;
+
+public class KcAnigbogucalculatortest{				// Main class
+	private Num num;
+	private Ope ope;
+	
+	public static void main(String args[]){
+		KcAnigbogucalculatortest c = new KcAnigbogucalculatortest();
+		c.start();
+	}
+	
+	public KcAnigbogucalculatortest()
+	{
+		
+	}
+	public void start()
+	{
+		
+			
+		describeProgram();
+		getInput();
+	}
+	private void describeProgram()
+	{
+		System.out.println("This is KC Anigbogu program and it starts from here");
+		System.out.println("IDS 401 Java Programming");
+		System.out.println("Date: " + "10/24/13");
+		
+	}
+	private void getInput()					// Calculator Output is done here
+	{
+		String number1;
+		String operator2;
+		String number2;
+		
+		try (Scanner scanner = new Scanner(System.in))
+{
+		System.out.print("Number 1: ");
+		number1 = scanner.next();
+		if
+		(number1.length() > 8){
+			System.out.println("Enter no more the 8 numbers.");
+			System.exit(0);
+		}
+		System.out.print("Operator: ");
+		operator2 = scanner.next();
+		System.out.print("Number 2: ");
+		number2 = scanner.next();
+		if
+		(number2.length() > 8){
+			System.out.println("Enter no more the 8 numbers.");
+			System.exit(0);
+		}		
+		Num num1= new Num(number1);
+		Num num2 = new Num(number2);
+		Ope ope = new Ope(num1, operator2, num2);
+		Num answer = ope.equation;
+		DecimalFormat dformat = new DecimalFormat();
+		dformat.setMaximumFractionDigits(8);
+		if (answer.type == 'i') {
+			System.out.println("Answer: " + answer.iNum );
+		} else if (answer.type == 'd') {
+			System.out.println("Answer: " + (dformat.format(answer.dNum)));
+			}
+		
+		System.out.println("Enter 'YES'(case-senstive) to use previous answer OR 'NO' to exit!");
+		
+		number1 = scanner.next();
+		if (number1.equals("yes")){
+			System.out.println(" Memory is? " + answer.dNum);
+			start();
+			{
+				describeProgram();
+				getInput();
+			}
+		} else if(number1.equals("no")){
+			System.exit(0);
+		}
+}}
+class Num									//Number class, Type checking is done here
+{ 
+	public char type;
+	public double dNum;
+	public int iNum;
+	public Num(String value)
+	{
+		if (value.contains(".")) {			//I if the values contain a decimal point run double
+			type = 'd';
+			dNum = Double.parseDouble(value);
+		} else 
+		{									// Else run as integer
+			type = 'i';
+			iNum = Integer.parseInt(value);
+		}
+	}
+	public Num(int value) {					// Check as an Int
+		type = 'i';
+		iNum = value;
+	}
+	public Num(double value) {				// Check as a double
+		type = 'd';
+		dNum = value;
+	}
+}
+
+class Ope{									//Operation class, calculator is solved here 
+	
+	public String operator2;
+	public Num num1, num2;
+	public Num equation;
+	public Ope(Num num1, String operator2, Num num2 )
+	{
+		this.num1 = num1;
+		this.operator2 = operator2;
+		this.num2 = num2;
+		equation = answer();
+
+	}
+	public Num num1()
+	{
+		return num1;
+	}
+	public Num num2()
+	{
+		return num2;
+		
+	}
+	
+	
+	public Num answer() {
+		
+		if(operator2.equals("+"))			//Addition
+		{
+			if(num1.type == 'i' && num2.type == 'i'){
+				int answer = num1.iNum + num2.iNum;
+				return new Num(answer);
+			}
+			else if
+			(num1.type == 'i' && num2.type =='d'){
+				double answer = num1.iNum + num2.dNum;
+				return new Num(answer);				
+			}
+			else if 
+			(num1.type == 'd' && num2.type =='i'){
+				double answer = num1.dNum + num2.iNum;
+				return new Num(answer);
+			}
+			else if
+			(num1.type == 'd' && num2.type =='d'){
+				double answer = num1.dNum + num2.dNum;
+				return new Num(answer);
+			}
+		}
+		else if(operator2.equals("-"))		//Subtraction
+		{
+			if(num1.type == 'i' && num2.type == 'i'){
+				int answer = num1.iNum - num2.iNum;
+				return new Num(answer);
+			}
+			else if
+			(num1.type == 'i' && num2.type =='d'){
+				double answer = num1.iNum - num2.dNum;
+				return new Num(answer);				
+			}
+			else if 
+			(num1.type == 'd' && num2.type =='i'){
+				double answer = num1.dNum - num2.iNum;
+				return new Num(answer);
+			}
+			else if
+			(num1.type == 'd' && num2.type =='d'){
+				double answer = num1.dNum - num2.dNum;
+				return new Num(answer);
+			}
+		}
+		else if(operator2.equals("*"))		//Multiplication
+		{
+			if(num1.type == 'i' && num2.type == 'i'){
+				int answer = num1.iNum * num2.iNum;
+				return new Num(answer);
+			}
+			else if
+			(num1.type == 'i' && num2.type =='d'){
+				double answer = num1.iNum * num2.dNum;
+				return new Num(answer);				
+			}
+			else if 
+			(num1.type == 'd' && num2.type =='i'){
+				double answer = num1.dNum * num2.iNum;
+				return new Num(answer);
+			}
+			else if
+			(num1.type == 'd' && num2.type =='d'){
+				double answer = num1.dNum * num2.dNum;
+				return new Num(answer);
+			}
+		}
+		else if(operator2.equals("/"))		//Division
+		{
+			if(num1.type == 'i' && num2.type == 'i')
+			{
+				int answer = num1.iNum / num2.iNum;
+				System.out.println("Modulo " + num1.iNum % num2.iNum);
+				return new Num(answer);
+			}
+			else if
+			(num1.type == 'i' && num2.type =='d'){
+				double answer = num1.iNum / num2.dNum;
+				return new Num(answer);				
+			}
+			else if 
+			(num1.type == 'd' && num2.type =='i'){
+				double answer = num1.dNum / num2.iNum;
+				return new Num(answer);
+			}
+			else if
+			(num1.type == 'd' && num2.type =='d'){
+				double answer = num1.dNum / num2.dNum;
+				return new Num(answer);
+			}
+		}
+		return null;
+		}
+		}
+	class Mem
+	{
+
+		String answer;
+		public Num getStoredAnswer(Num answer2) {
+			return answer2;
+			}
+	}
+}
+
+
+
